@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  image:
+    container_name: hyperf
+    image: hyperf
+    build:
+      context: .
+      args:
+        APP_STAGE: dev
+
+  bin: &base
+    container_name: bin.hyperf
+    profiles: ['bin']
+    image: hyperf
+    depends_on:
+      - image
+    entrypoint: ['php', bin/hyperf.php]
+    env_file:
+      - .env
+    volumes:
+      - ./:/opt/www
+  
+  composer: 
+    <<: *base
+    container_name: composer.hyperf
+    profiles: ["composer"]
+    entrypoint: ["composer"]
+    command: validate
