@@ -27,3 +27,37 @@ services:
     profiles: ["composer"]
     entrypoint: ["composer"]
     command: validate
+
+  app:
+    container_name: app.hyperf
+    profiles: []
+    entrypoint:
+      - php
+      - bin/hyperf.php
+      - server:watch
+
+    image: hyperf
+    depends_on:
+      - image
+    env_file:
+    - .env
+    volumes:
+    - ./:/opt/www
+    ports:
+    - 9501:9501
+
+  db:
+    container_name: hyperf-db
+    image: mysql:8.1
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: hyperf
+      MYSQL_DATABASE: hyperf
+    ports:
+    - 3306:3306
+    volumes:
+    - mysql.hyperf.dev:/var/lib/mysql
+
+volumes:
+  mysql.hyperf.dev:
+    driver: local

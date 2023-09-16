@@ -9,5 +9,10 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
+use App\Repository\LinkRepository;
+use App\Repository\LinkRepositoryInterface;
+
 return [
+    LinkRepositoryInterface::class => LinkRepository::class
 ];
